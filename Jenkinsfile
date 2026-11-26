@@ -18,14 +18,20 @@ pipeline {
                 bat 'C:\\Users\\VVCE\\AppData\\Local\\Programs\\Python\\Python311\\python.exe app.py'
             }
         }
+        stage('3. Docker Verification') {
+            steps {
+                bat '"%DOCKER%" --version'
+                bat '"%DOCKER%" info'
+            }
+        }
 
-        stage('3. Build & Tag Docker Image') {
+        stage('4. Build & Tag Docker Image') {
             steps {
                 bat "docker build -t ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} -t ${REGISTRY}/${IMAGE_NAME}:latest ."
             }
         }
 
-        stage('4. Push Image to Registry') {
+        stage('5. Push Image to Registry') {
             steps {
                 bat "docker push ${REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"
                 bat "docker push ${REGISTRY}/${IMAGE_NAME}:latest"
